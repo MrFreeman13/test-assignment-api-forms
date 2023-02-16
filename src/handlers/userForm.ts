@@ -1,5 +1,6 @@
 import { AppDataSource } from "../data-source"
 import { UserForm } from "../entity/UserForm"
+import { validate } from "class-validator"
 
 // Get all
 export const getUserForms = async (req, res) => {
@@ -20,15 +21,21 @@ export const getUserFormById = async (req, res) => {
 
 // Create User Form
 
-export const createUserForm = async (req, res) => {
+export const createUserForm = async (req, res, next) => {
   const user = new UserForm()
   user.firstName = req.body.firstName
   user.lastName = req.body.lastName
   user.email = req.body.email
   user.phone = req.body.phone
   user.country = req.body.country
-  await AppDataSource.manager.save(user)
-  console.log("Saved a new user with id: " + user.id)
   
+  const errors = await validate(user)
+  if (errors.length > 0) {
+      next(Error(`Validation failed!`))
+  } else {
+    await AppDataSource.manager.save(user)
+    console.log("Saved a new user with id: " + user.id)
+  }
+
   res.json({data: user})
 }

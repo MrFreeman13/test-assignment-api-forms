@@ -1,4 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
+import {
+    IsEmail
+} from "class-validator"
 
 @Entity()
 export class UserForm {
@@ -19,6 +22,7 @@ export class UserForm {
     country: string
 
     @Column()
+    @IsEmail()
     email: string
 
 }
