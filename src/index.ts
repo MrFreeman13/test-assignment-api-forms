@@ -42,5 +42,5 @@ AppDataSource.initialize().then(async () => {
 import app from './server'
 
 app.listen(3001, () => {
-  console.log('hello on http://localhost:3001')
+  console.log('starting on http://localhost:3001')
 })
